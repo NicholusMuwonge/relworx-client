@@ -107,6 +107,10 @@ const SignUpComponent = (props) => {
                   <a className="signup__link" href="/login">
                     I am already a member
                   </a>
+                  <br/>
+                  <a className="signup__link" href="/">
+                      Home
+                  </a>
                 </li>
               </ul>
             </div>

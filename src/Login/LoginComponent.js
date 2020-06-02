@@ -80,6 +80,10 @@ const LoginComponent = (props) =>{
                   <a className="signup__link" href="/register">
                     I don't have an account
                   </a>
+                  <br/>
+                  <a className="signup__link" href="/">
+                      Home
+                  </a>
                 </li>
               </ul>
             </div>
