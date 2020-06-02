@@ -1,8 +1,9 @@
-import React from 'react';
+import React from "react";
 import "react-confirm-alert/src/react-confirm-alert.css";
 import axios from "axios";
-import { AlreadyAuthenticated, Alerts, errorMessage } from "../Utils/Auth";
-import './SignUp.scss';
+import { AlreadyAuthenticated } from "../Utils/Auth";
+import "./SignUp.scss";
+import SignUpComponent from "./SignUpComponent";
 
 class SignUp extends React.Component {
   constructor(props) {
@@ -12,12 +13,12 @@ class SignUp extends React.Component {
         username: "",
         email: "",
         password: "",
-        password1: ""
+        password1: "",
       },
       errors: {},
       success: "false",
       server_errors: "",
-      buttonLoading: false
+      buttonLoading: false,
     };
 
     this.handleChange = this.handleChange.bind(this);
@@ -31,7 +32,7 @@ class SignUp extends React.Component {
     fields[e.target.name] = e.target.value;
     this.setState(
       {
-        fields
+        fields,
       },
       () => {
         this.validateForm();
@@ -41,6 +42,7 @@ class SignUp extends React.Component {
 
   submituserRegistrationForm(e) {
     e.preventDefault();
+    this.makePost();
     if (this.validateForm()) {
       this.makePost();
     }
@@ -53,9 +55,9 @@ class SignUp extends React.Component {
       .post(postUrl, {
         username: this.state.fields.username,
         email: this.state.fields.email,
-        password: this.state.fields.password
+        password: this.state.fields.password,
       })
-      .then(result => {
+      .then((result) => {
         if (result.status === 201) {
           this.setState({ success: "true" });
           this.setState({ buttonLoading: false });
@@ -66,7 +68,7 @@ class SignUp extends React.Component {
           this.setState({ success: "false" });
         }
       })
-      .catch(err => {
+      .catch((err) => {
         if (typeof err === "object") {
           this.setState({ server_errors: err.response.status });
           this.setState({ buttonLoading: false });
@@ -134,124 +136,30 @@ class SignUp extends React.Component {
     }
 
     this.setState({
-      errors: errors
+      errors: errors,
     });
     return formIsValid;
   }
 
   render() {
     return (
-      <div className="signup__container">
-        <div className="container__child signup__form">
-          <h3 className="text-center" style={{ color: "rgba(0, 0, 0, 0.685)" }}>
-            SignUp
-          </h3>
-          <br />
-          <form onSubmit={this.submituserRegistrationForm} autoComplete="on">
-            <div className="form-group">
-              <label htmlFor="name">* Userame</label>
-              <input
-                className="form-control"
-                type="text"
-                name="username"
-                id="name"
-                placeholder="John Doe"
-                autoComplete="on"
-                value={this.state.fields.username}
-                onChange={this.handleChange}
-              />
-              {errorMessage(this.state.errors.username)}
-            </div>
-
-            <div className="form-group">
-              <label htmlFor="email">* Email</label>
-              <input
-                className="form-control"
-                type="text"
-                name="email"
-                id="email"
-                autoComplete="on"
-                placeholder="you@email.com"
-                value={this.state.fields.email}
-                onChange={this.handleChange}
-              />
-              {errorMessage(this.state.errors.email)}
-            </div>
-            <div className="form-group">
-              <label htmlFor="password">* Password</label>
-              <input
-                className="form-control"
-                type="password"
-                name="password"
-                id="password"
-                autoComplete="on"
-                placeholder="Must have atleast 8 characters, Special charrater , atleast 1 upporcase"
-                value={this.state.fields.password}
-                onChange={this.handleChange}
-              />
-              {errorMessage(this.state.errors.password)}
-            </div>
-            <div className="form-group">
-              <label htmlFor="passwordRepeat">* Repeat Password</label>
-              <input
-                className="form-control"
-                type="password"
-                name="password1"
-                id="passwordRepeat"
-                autoComplete="on"
-                placeholder="Please re-enter the password above"
-                value={this.state.fields.password1}
-                onChange={this.handleChange}
-              />
-              {errorMessage(this.state.errors.password1)}
-            </div>
-            {this.state.server_errors === 409 ? (
-              <Alerts
-                color={"warning"}
-                text={
-                  "User Seems to be Already signed up. Please Try signing in instead"
-                }
-              />
-            ) : (
-              ""
-            )}
-            {this.state.success === "true" ? (
-              <Alerts
-                color={"success"}
-                text={
-                  "Looks like you are all set you will be redirected to the login shortly."
-                }
-              />
-            ) : (
-              ""
-            )}
-            <div className="m-t-lg">
-              <ul className="list-inline">
-                <li>
-                  <input
-                    className="btn btn--form"
-                    type="submit"
-                    disabled={this.state.buttonLoading === true}
-                    value={
-                      this.state.buttonLoading === false
-                        ? "Register"
-                        : "loading"
-                    }
-                  />
-                </li>
-                <li>
-                  <a className="signup__link" href="/login">
-                    I am already a member
-                  </a>
-                </li>
-              </ul>
-            </div>
-          </form>
-        </div>
-      </div>
+      <SignUpComponent
+        submituserRegistrationForm={this.submituserRegistrationForm}
+        username={this.state.fields.username}
+        email={this.state.fields.email}
+        password={this.state.fields.password}
+        password1={this.state.fields.password1}
+        handleChange={this.handleChange}
+        usernameError={this.state.errors.username}
+        emailError={this.state.errors.email}
+        passwordError={this.state.errors.password}
+        password1Error={this.state.errors.password1}
+        server_errors={this.state.server_errors}
+        success={this.state.success}
+        buttonLoading={this.state.buttonLoading}
+      />
     );
   }
 }
 
 export default AlreadyAuthenticated(SignUp);
-

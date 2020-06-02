@@ -11,7 +11,7 @@
   [type="submit"] {transition: all .25s ease-in;}
   .signup__container {
     position: absolute;
-    margin-top: 60%;
+    margin-top: 30%;
     margin-bottom: 10%;
     right: 0;
     left: 0;
@@ -133,3 +133,6 @@
     box-shadow: none;
   }
   
+  .signup__page{
+    margin-top: -30%;
+  }

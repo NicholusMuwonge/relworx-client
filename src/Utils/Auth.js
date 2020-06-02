@@ -29,9 +29,10 @@ export const errorMessage = item => (
 
 export const Alerts = props => {
   const [visible, setVisible] = useState(true);
-
+  window.setTimeout(()=>{
+    setVisible(false)
+  },5000)
   const onDismiss = () => setVisible(false);
-
   return (
     <Alert color={props.color} isOpen={visible} toggle={onDismiss}>
       {props.text}

@@ -50,8 +50,8 @@ class Dashboard extends React.Component {
       images,
     });
 
-    if (e.target.files[0]) {
-      const image = e.target.files[0];
+    if (e.target.files) {
+      const image = e.target.files;
       this.setState(() => ({ image }));
     }
   }
@@ -95,7 +95,7 @@ class Dashboard extends React.Component {
       placeholderImage: item.image,
       placeholderTitle: item.title,
       placeholderAuthor: item.author,
-      placeholderIsbn: item.isbn,
+      placeholderIsbn: item.isbn
     });
     this.setState({
       task: this.state.booksContainer.filter((item) => item.key !== key),
@@ -170,7 +170,7 @@ class Dashboard extends React.Component {
             this.state.fields.isbn === ""
               ? this.state.placeholderIsbn
               : this.state.fields.isbn,
-          image: this.state.image,
+          image: this.state.image===""?this.state.placeholderImage:this.state.image,
         },
         {
           headers: {
@@ -182,7 +182,8 @@ class Dashboard extends React.Component {
         if (result.status === 200) {
           this.setState({ success: "true" });
           this.setState({ buttonLoading: false });
-          this.setState({ editMode: false });
+          this.setState({ editMode: false, image:"" });
+          this.collectItems();
         } else {
           this.setState({ success: "false" });
         }
@@ -197,18 +198,16 @@ class Dashboard extends React.Component {
   uploadImage = (files) => {
     const fileload = firebase
       .storage()
-      .ref(`images/${files[0].names}`)
+      .ref(`images/${files[0].name}`
+      )
       .put(files[0]);
     fileload.then(() => {
       firebase
         .storage()
-        .ref(`images/${files[0].names}`)
+        .ref(`images/${files[0].name}`)
         .getDownloadURL()
         .then((url) => {
-          const image = {
-            image: url,
-          };
-          this.setState({ image: image.image });
+          this.setState({ image: url });
         });
     });
     fileload.on("state_changed", (snapshot) => {
@@ -253,7 +252,7 @@ class Dashboard extends React.Component {
     return (
       <React.Fragment>
         <button
-          className="logout btn btn-primary"
+          className="logout btn btn--form"
           onClick={() => {
             sessionStorage.clear();
             window.location.replace("/login");
@@ -266,7 +265,7 @@ class Dashboard extends React.Component {
             <AddBook />
             <button
               type="button"
-              class="btn btn-warning btn--form close-button"
+              className="btn btn-warning btn--form close-button"
               onClick={() => this.setState({ show: "no" })}
             >
               Close
@@ -276,21 +275,21 @@ class Dashboard extends React.Component {
           <React.Fragment>
             <span>
               {this.state.success === "true" ? (
-                <Alerts color={"success"} text={"Book Added sucessfully"} />
+                <Alerts color={"success"} text={"Book Edited sucessfully"} />
               ) : (
                 false
               )}
             </span>
             {this.state.noBookBanner === true ? (
               <React.Fragment>
-                <div class="jumbotron">
-                  <h1 class="display-4 black">Ooops, Sorry !</h1>
-                  <p class="lead">Seems like you have no Books available</p>
-                  <hr class="my-4" />
+                <div className="jumbotron">
+                  <h1 className="display-4 black">Ooops, Sorry !</h1>
+                  <p className="lead">Seems like you have no Books available</p>
+                  <hr className="my-4" />
                   <p>Go ahead and Add Books</p>
-                  <p class="lead">
+                  <p className="lead">
                     <span
-                      class="btn btn-success btn-lg"
+                      className="btn btn-success btn-lg"
                       onClick={this.Toggle}
                       role="button"
                     >
@@ -303,13 +302,13 @@ class Dashboard extends React.Component {
               <div className="books">
                 {Object.values(this.state.booksContainer).map(
                   (ObjectsList, key) => (
-                    <React.Fragment>
-                      <div class="container-fluid" key={ObjectsList.id}>
-                        <div class="row">
-                          <div class="col-12 mt-3">
-                            <div class="card">
-                              <div class="card-horizontal">
-                                <div class="img-square-wrapper">
+                    <React.Fragment key={key}>
+                      <div className="container-fluid" key={ObjectsList.id}>
+                        <div className="row">
+                          <div className="col-12 mt-3">
+                            <div className="card">
+                              <div className="card-horizontal">
+                                <div className="img-square-wrapper">
                                   {this.state.status > 0 &&
                                   this.state.editMode === "yes" &&
                                   ObjectsList.id === this.state.bookId ? (
@@ -323,7 +322,7 @@ class Dashboard extends React.Component {
 
                                   <img src={ObjectsList.image} alt="Card cap" />
                                 </div>
-                                <div class="card-body">
+                                <div className="card-body">
                                   {this.state.editMode === "yes" &&
                                   ObjectsList.id === this.state.bookId ? (
                                     <React.Fragment>
@@ -339,7 +338,7 @@ class Dashboard extends React.Component {
                                       />
                                     </React.Fragment>
                                   ) : (
-                                    <h4 class="card-text">
+                                    <h4 className="card-text">
                                       <b>{ObjectsList.title}</b>
                                     </h4>
                                   )}
@@ -358,7 +357,7 @@ class Dashboard extends React.Component {
                                       />
                                     </React.Fragment>
                                   ) : (
-                                    <h4 class="card-text">
+                                    <h4 className="card-text">
                                       <b>Authored By:</b> {ObjectsList.author}
                                     </h4>
                                   )}
@@ -377,7 +376,7 @@ class Dashboard extends React.Component {
                                       />
                                     </React.Fragment>
                                   ) : (
-                                    <h4 class="card-title">
+                                    <h4 className="card-title">
                                       <b>ISBN</b>: {ObjectsList.isbn}
                                     </h4>
                                   )}
@@ -387,7 +386,7 @@ class Dashboard extends React.Component {
                                 className="card-footer row"
                                 key={ObjectsList.id}
                               >
-                                <div class=" col-md-4" key={ObjectsList.id}>
+                                <div className=" col-md-4" key={ObjectsList.id}>
                                   {this.state.editMode === "yes" &&
                                   ObjectsList.id === this.state.bookId ? (
                                     <React.Fragment>
@@ -395,10 +394,10 @@ class Dashboard extends React.Component {
                                         key={ObjectsList.id}
                                         className="form-control"
                                         type="file"
-                                        name="image"
+                                        name={this.state.image}
                                         id={`image-` + ObjectsList.id}
                                         accept=".jpg, .svg , .png"
-                                        onChange={(event) =>
+                                        onChange={event =>
                                           this.uploadImage(event.target.files)
                                         }
                                       />
@@ -412,7 +411,7 @@ class Dashboard extends React.Component {
                                       )}
                                     </React.Fragment>
                                   ) : (
-                                    <small class="text-muted">
+                                    <small className="text-muted">
                                       Created On{" "}
                                       {normaliseDate(ObjectsList.createdAt)}
                                     </small>
@@ -424,11 +423,7 @@ class Dashboard extends React.Component {
                                     this.editClick(
                                       e,
                                       ObjectsList,
-                                      ObjectsList.id,
-                                      ObjectsList.image,
-                                      ObjectsList.title,
-                                      ObjectsList.author,
-                                      ObjectsList.isbn
+                                      ObjectsList.id
                                     )
                                   }
                                 >

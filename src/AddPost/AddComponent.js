@@ -91,7 +91,7 @@ const AddComponent = (props) => {
                   {props.server_errors === 409 ? (
                     <Alerts
                       color={"warning"}
-                      text={"Book Is Already in our system"}
+                      text={"Book Is Already in our system, edit your ISBN Field please"}
                     />
                   ) : (
                     ""

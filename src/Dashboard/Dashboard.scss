@@ -1,58 +1,61 @@
 .card-horizontal {
-    display: flex;
-    flex: 1 1 auto;
+  display: flex;
+  flex: 1 1 auto;
 }
 
 .add-book {
-    position: fixed;
-    bottom: 0px;
-    right: 0px;
-    width: 5rem;
-    height: 5rem;
-    border-radius: 50rem;
-    z-index: 10000;
-    font-size: xx-large;
-    border: none;
-    background-color: green;
-    font-weight: 900;
-    color: white;
-    outline: none;
+  position: fixed;
+  bottom: 2px;
+  right: 4px;
+  width: 5rem;
+  height: 5rem;
+  border-radius: 50rem;
+  z-index: 10000;
+  font-size: xx-large;
+  border: none;
+  background-color: green;
+  font-weight: 900;
+  color: white;
+  outline: none;
+}
+
+.add-book:hover {
+  background-color: black;
 }
 
 *:focus {
-    outline: 0 !important;
+  outline: 0 !important;
 }
 
-.img-square-wrapper>img{
-    width: 25rem;
-    height: 10rem;
+.img-square-wrapper > img {
+  width: 25rem;
+  height: 10rem;
 }
 
-.edit, .delete{
-    cursor: pointer;
+.edit,
+.delete {
+  cursor: pointer;
 }
-
-
 
 .upload-btn-wrapper {
-    position: relative;
-    overflow: hidden;
-    display: inline-block;
-  }
-
-.close-button{
-    top:0;
-    position: fixed;
+  position: relative;
+  overflow: hidden;
+  display: inline-block;
 }
 
-.logout{
-    position: fixed;
-    top: 0;
-    right: 0;
-    margin-bottom: 4rem;
-    z-index: 10000;
+.close-button {
+  top: 0;
+  position: fixed;
 }
 
-.books{
-    margin-top: 3rem;
+.logout {
+  position: fixed;
+  top: 2px;
+  right: 4px;
+  margin-bottom: 4rem;
+  z-index: 10000;
+}
+
+.books {
+  margin-top: 3rem;
 }

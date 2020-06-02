@@ -43,9 +43,7 @@ class AddBook extends React.Component {
 
   submitBookdata(e) {
     e.preventDefault();
-    if (this.validateForm()) {
       this.makePost();
-    }
   }
 
   makePost() {
