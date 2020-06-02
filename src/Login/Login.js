@@ -2,7 +2,6 @@ import React from "react";
 import "react-confirm-alert/src/react-confirm-alert.css";
 import axios from "axios";
 import { AlreadyAuthenticated } from "../Utils/Auth";
-import jwt from "jwt-decode";
 import "./Login.scss";
 import LoginComponent from "./LoginComponent";
 
@@ -47,7 +46,6 @@ class Login extends React.Component {
       })
       .then((result) => {
         if (result.status === 200) {
-          const user = jwt(result.data.token);
           this.setState({ success: "true" });
           this.setState({ buttonLoading: false });
           sessionStorage.setItem("token", result.data.token);
