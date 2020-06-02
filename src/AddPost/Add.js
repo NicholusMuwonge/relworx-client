@@ -23,9 +23,7 @@ class AddBook extends React.Component {
     };
 
     this.handleChange = this.handleChange.bind(this);
-    this.submitBookdata = this.submitBookdata.bind(
-      this
-    );
+    this.submitBookdata = this.submitBookdata.bind(this);
   }
 
   handleChange(e) {
@@ -43,7 +41,7 @@ class AddBook extends React.Component {
 
   submitBookdata(e) {
     e.preventDefault();
-      this.makePost();
+    this.makePost();
   }
 
   makePost() {
@@ -56,7 +54,10 @@ class AddBook extends React.Component {
           title: this.state.fields.title,
           author: this.state.fields.author,
           isbn: this.state.fields.isbn,
-          image: this.state.image===""?"https://picsum.photos/200/300":this.state.image,
+          image:
+            this.state.image === ""
+              ? "https://picsum.photos/200/300"
+              : this.state.image,
         },
         {
           headers: {
@@ -66,12 +67,11 @@ class AddBook extends React.Component {
       )
       .then((result) => {
         if (result.status === 201) {
-          this.setState({ success: "true" });
+          this.setState({ success: "true", status: 0 });
           this.setState({ buttonLoading: false });
           setTimeout(() => {
             window.location.reload();
-        }, 3000)
-         
+          }, 3000);
         } else {
           this.setState({ success: "false" });
         }
@@ -87,12 +87,12 @@ class AddBook extends React.Component {
   uploadImage = (files) => {
     const fileload = firebase
       .storage()
-      .ref(`images/${files[0].names}`)
+      .ref(`images/${files[0].name}`)
       .put(files[0]);
     fileload.then(() => {
       firebase
         .storage()
-        .ref(`images/${files[0].names}`)
+        .ref(`images/${files[0].name}`)
         .getDownloadURL()
         .then((url) => {
           const image = {
@@ -129,9 +129,10 @@ class AddBook extends React.Component {
       errors["isbn"] = "*Please enter book's isbn.";
     }
 
-    if (13>fields["isbn"].length>20) {
+    if (13 > fields["isbn"].length > 20) {
       formIsValid = false;
-      errors["isbn"] = "*Please enter atleat 13 characters and atmost 20 characters.";
+      errors["isbn"] =
+        "*Please enter atleat 13 characters and atmost 20 characters.";
     }
 
     if (this.state.server_errors === 409) {
@@ -149,22 +150,22 @@ class AddBook extends React.Component {
     return (
       <React.Fragment>
         <AddComponent
-        submitBookdata={this.submitBookdata}
-        title={this.state.fields.title}
-        handleChange={this.handleChange}
-        titleError={this.state.errors.title}
-        authorError={this.state.errors.author}
-        isbnError={this.state.errors.isbn}
-        author={this.state.fields.author}
-        isbn={this.state.fields.isbn}
-        image={this.state.image}
-        buttonLoading={this.state.buttonLoading}
-        uploadImage={event=>this.uploadImage(event.target.files)}
-        status={this.state.status}
-        server_errors={this.state.server_errors}
-        success={this.state.success}
+          submitBookdata={this.submitBookdata}
+          title={this.state.fields.title}
+          handleChange={this.handleChange}
+          titleError={this.state.errors.title}
+          authorError={this.state.errors.author}
+          isbnError={this.state.errors.isbn}
+          author={this.state.fields.author}
+          isbn={this.state.fields.isbn}
+          image={this.state.image}
+          buttonLoading={this.state.buttonLoading}
+          uploadImage={(event) => this.uploadImage(event.target.files)}
+          status={this.state.status}
+          server_errors={this.state.server_errors}
+          success={this.state.success}
         />
-        </React.Fragment>
+      </React.Fragment>
     );
   }
 }

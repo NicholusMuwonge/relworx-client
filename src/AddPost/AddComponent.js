@@ -6,9 +6,9 @@ import { Alerts, errorMessage } from "../Utils/Auth";
 const AddComponent = (props) => {
   return (
     <React.Fragment>
-      <div  id="myModal">
-        <div >
-          <div >
+      <div id="myModal">
+        <div>
+          <div>
             <div className="signup__container">
               <div className="container__child signup__form">
                 <h3
@@ -85,13 +85,19 @@ const AddComponent = (props) => {
                         width="140rem"
                         height="90rem"
                       />
-                      <progress value={props.status} max="100" />
+                      {props.status > 0 && props.status < 100 ? (
+                        <progress value={props.status} max="100" />
+                      ) : (
+                        false
+                      )}
                     </div>
                   </h6>
                   {props.server_errors === 409 ? (
                     <Alerts
                       color={"warning"}
-                      text={"Book Is Already in our system, edit your ISBN Field please"}
+                      text={
+                        "Book Is Already in our system, edit your ISBN Field please"
+                      }
                     />
                   ) : (
                     ""

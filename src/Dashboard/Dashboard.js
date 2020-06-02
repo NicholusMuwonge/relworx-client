@@ -6,6 +6,7 @@ import axios from "axios";
 import { Alerts, Authenticated, normaliseDate } from "../Utils/Auth";
 import firebase from "../Firebase/Firebase";
 import AddBook from "../AddPost/Add";
+import back from "./back-arrow.png";
 
 class Dashboard extends React.Component {
   constructor(props) {
@@ -37,9 +38,7 @@ class Dashboard extends React.Component {
     };
 
     this.handleChange = this.handleChange.bind(this);
-    this.submitEditBookData = this.submitEditBookData.bind(
-      this
-    );
+    this.submitEditBookData = this.submitEditBookData.bind(this);
   }
   handleChange(e) {
     let fields = this.state.fields;
@@ -95,7 +94,7 @@ class Dashboard extends React.Component {
       placeholderImage: item.image,
       placeholderTitle: item.title,
       placeholderAuthor: item.author,
-      placeholderIsbn: item.isbn
+      placeholderIsbn: item.isbn,
     });
     this.setState({
       task: this.state.booksContainer.filter((item) => item.key !== key),
@@ -170,7 +169,10 @@ class Dashboard extends React.Component {
             this.state.fields.isbn === ""
               ? this.state.placeholderIsbn
               : this.state.fields.isbn,
-          image: this.state.image===""?this.state.placeholderImage:this.state.image,
+          image:
+            this.state.image === ""
+              ? this.state.placeholderImage
+              : this.state.image,
         },
         {
           headers: {
@@ -181,8 +183,8 @@ class Dashboard extends React.Component {
       .then((result) => {
         if (result.status === 200) {
           this.setState({ success: "true" });
-          this.setState({ buttonLoading: false });
-          this.setState({ editMode: false, image:"" });
+          this.setState({ buttonLoading: false,status:0 });
+          this.setState({ editMode: false, image: "" });
           this.collectItems();
         } else {
           this.setState({ success: "false" });
@@ -198,8 +200,7 @@ class Dashboard extends React.Component {
   uploadImage = (files) => {
     const fileload = firebase
       .storage()
-      .ref(`images/${files[0].name}`
-      )
+      .ref(`images/${files[0].name}`)
       .put(files[0]);
     fileload.then(() => {
       firebase
@@ -263,13 +264,12 @@ class Dashboard extends React.Component {
         {this.state.show === "yes" ? (
           <React.Fragment>
             <AddBook />
-            <button
-              type="button"
-              className="btn btn-warning btn--form close-button"
+            <img
+              src={back}
+              className="close-button"
               onClick={() => this.setState({ show: "no" })}
-            >
-              Close
-            </button>
+              alt=""
+            />
           </React.Fragment>
         ) : (
           <React.Fragment>
@@ -314,13 +314,13 @@ class Dashboard extends React.Component {
                                   ObjectsList.id === this.state.bookId ? (
                                     <img
                                       src={this.state.image}
-                                      alt="Card cap"
+                                      alt=""
                                     />
                                   ) : (
                                     false
                                   )}
 
-                                  <img src={ObjectsList.image} alt="Card cap" />
+                                  <img src={ObjectsList.image} alt="" />
                                 </div>
                                 <div className="card-body">
                                   {this.state.editMode === "yes" &&
@@ -397,11 +397,12 @@ class Dashboard extends React.Component {
                                         name={this.state.image}
                                         id={`image-` + ObjectsList.id}
                                         accept=".jpg, .svg , .png"
-                                        onChange={event =>
+                                        onChange={(event) =>
                                           this.uploadImage(event.target.files)
                                         }
                                       />
-                                      {100 > this.state.status > 0 ? (
+                                      {this.state.status > 0 &&
+                                      this.state.status < 100 ? (
                                         <progress
                                           value={this.state.status}
                                           max="100"
@@ -412,7 +413,7 @@ class Dashboard extends React.Component {
                                     </React.Fragment>
                                   ) : (
                                     <small className="text-muted">
-                                      Created On{" "}
+                                      Created On
                                       {normaliseDate(ObjectsList.createdAt)}
                                     </small>
                                   )}
@@ -472,8 +473,7 @@ class Dashboard extends React.Component {
               data-target="#myModal"
               onClick={this.Toggle}
             >
-              {" "}
-              +{" "}
+              +
             </button>
           </React.Fragment>
         )}
