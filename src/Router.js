@@ -1,7 +1,7 @@
 import React from "react";
 import { Route, BrowserRouter, Switch } from "react-router-dom";
-import App from "./App";
-import "./App.scss";
+import App from "./App/App";
+import "./App/App.scss";
 import SignUp from "./SignUp/SignUp";
 import Login from "./Login/Login";
 import Dashboard from "./Dashboard/Dashboard";
