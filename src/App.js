@@ -12,7 +12,6 @@ function App() {
           Login
         </a>
         <br />
-        <br />
         <a href="/register" className="btn btn-primary">
           Register
         </a>

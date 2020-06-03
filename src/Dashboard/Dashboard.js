@@ -7,6 +7,7 @@ import { Alerts, Authenticated, normaliseDate } from "../Utils/Auth";
 import firebase from "../Firebase/Firebase";
 import AddBook from "../AddPost/Add";
 import back from "./back-arrow.png";
+import CardComponent, { Jumbotron } from "./DashboardComponent";
 
 class Dashboard extends React.Component {
   constructor(props) {
@@ -58,9 +59,6 @@ class Dashboard extends React.Component {
   submitEditBookData(e) {
     e.preventDefault();
     this.makePost();
-    if (this.validateForm()) {
-      this.makePost();
-    }
   }
 
   collectItems = () => {
@@ -183,7 +181,7 @@ class Dashboard extends React.Component {
       .then((result) => {
         if (result.status === 200) {
           this.setState({ success: "true" });
-          this.setState({ buttonLoading: false,status:0 });
+          this.setState({ buttonLoading: false, status: 0 });
           this.setState({ editMode: false, image: "" });
           this.collectItems();
         } else {
@@ -281,187 +279,35 @@ class Dashboard extends React.Component {
               )}
             </span>
             {this.state.noBookBanner === true ? (
-              <React.Fragment>
-                <div className="jumbotron">
-                  <h1 className="display-4 black">Ooops, Sorry !</h1>
-                  <p className="lead">Seems like you have no Books available</p>
-                  <hr className="my-4" />
-                  <p>Go ahead and Add Books</p>
-                  <p className="lead">
-                    <span
-                      className="btn btn-success btn-lg"
-                      onClick={this.Toggle}
-                      role="button"
-                    >
-                      Add Books
-                    </span>
-                  </p>
-                </div>
-              </React.Fragment>
+              <Jumbotron Toggle={this.Toggle} />
             ) : (
               <div className="books">
                 {Object.values(this.state.booksContainer).map(
                   (ObjectsList, key) => (
                     <React.Fragment key={key}>
-                      <div className="container-fluid" key={ObjectsList.id}>
-                        <div className="row">
-                          <div className="col-12 mt-3">
-                            <div className="card">
-                              <div className="card-horizontal">
-                                <div className="img-square-wrapper">
-                                  {this.state.status > 0 &&
-                                  this.state.editMode === "yes" &&
-                                  ObjectsList.id === this.state.bookId ? (
-                                    <img
-                                      src={this.state.image}
-                                      alt=""
-                                    />
-                                  ) : (
-                                    false
-                                  )}
-
-                                  <img src={ObjectsList.image} alt="" />
-                                </div>
-                                <div className="card-body">
-                                  {this.state.editMode === "yes" &&
-                                  ObjectsList.id === this.state.bookId ? (
-                                    <React.Fragment>
-                                      Title:
-                                      <input
-                                        className="form-control"
-                                        type="text"
-                                        name="title"
-                                        id="name"
-                                        placeholder="John Doe"
-                                        defaultValue={ObjectsList.title}
-                                        onChange={(e) => this.handleChange(e)}
-                                      />
-                                    </React.Fragment>
-                                  ) : (
-                                    <h4 className="card-text">
-                                      <b>{ObjectsList.title}</b>
-                                    </h4>
-                                  )}
-                                  {this.state.editMode === "yes" &&
-                                  ObjectsList.id === this.state.bookId ? (
-                                    <React.Fragment>
-                                      Author:
-                                      <input
-                                        className="form-control"
-                                        type="text"
-                                        name="author"
-                                        id="name"
-                                        placeholder="Ann-Marrie"
-                                        defaultValue={ObjectsList.author}
-                                        onChange={(e) => this.handleChange(e)}
-                                      />
-                                    </React.Fragment>
-                                  ) : (
-                                    <h4 className="card-text">
-                                      <b>Authored By:</b> {ObjectsList.author}
-                                    </h4>
-                                  )}
-                                  {this.state.editMode === "yes" &&
-                                  ObjectsList.id === this.state.bookId ? (
-                                    <React.Fragment>
-                                      ISBN:
-                                      <input
-                                        className="form-control"
-                                        type="text"
-                                        name="isbn"
-                                        id="name"
-                                        placeholder="978-0-306-40615-7"
-                                        defaultValue={ObjectsList.isbn}
-                                        onChange={(e) => this.handleChange(e)}
-                                      />
-                                    </React.Fragment>
-                                  ) : (
-                                    <h4 className="card-title">
-                                      <b>ISBN</b>: {ObjectsList.isbn}
-                                    </h4>
-                                  )}
-                                </div>
-                              </div>
-                              <div
-                                className="card-footer row"
-                                key={ObjectsList.id}
-                              >
-                                <div className=" col-md-4" key={ObjectsList.id}>
-                                  {this.state.editMode === "yes" &&
-                                  ObjectsList.id === this.state.bookId ? (
-                                    <React.Fragment>
-                                      <input
-                                        key={ObjectsList.id}
-                                        className="form-control"
-                                        type="file"
-                                        name={this.state.image}
-                                        id={`image-` + ObjectsList.id}
-                                        accept=".jpg, .svg , .png"
-                                        onChange={(event) =>
-                                          this.uploadImage(event.target.files)
-                                        }
-                                      />
-                                      {this.state.status > 0 &&
-                                      this.state.status < 100 ? (
-                                        <progress
-                                          value={this.state.status}
-                                          max="100"
-                                        />
-                                      ) : (
-                                        false
-                                      )}
-                                    </React.Fragment>
-                                  ) : (
-                                    <small className="text-muted">
-                                      Created On
-                                      {normaliseDate(ObjectsList.createdAt)}
-                                    </small>
-                                  )}
-                                </div>
-                                <div
-                                  className="col-md-4 edit"
-                                  onClick={(e) =>
-                                    this.editClick(
-                                      e,
-                                      ObjectsList,
-                                      ObjectsList.id
-                                    )
-                                  }
-                                >
-                                  {this.state.editMode === "yes" &&
-                                  ObjectsList.id === this.state.bookId
-                                    ? "Cancel"
-                                    : "Edit"}
-                                </div>
-                                {this.state.editMode === "yes" &&
-                                ObjectsList.id === this.state.bookId ? (
-                                  <input
-                                    className="btn btn-md btn-success delete"
-                                    onClick={this.submitEditBookData}
-                                    type="submit"
-                                    disabled={this.state.buttonLoading === true}
-                                    value={
-                                      this.state.buttonLoading === false
-                                        ? "Submit"
-                                        : "loading"
-                                    }
-                                  />
-                                ) : (
-                                  <div className="col-md-4 delete">Delete</div>
-                                )}
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      {this.state.server_errors === 409 ? (
-                        <Alerts
-                          color={"warning"}
-                          text={"Book Is Already in our system"}
-                        />
-                      ) : (
-                        ""
-                      )}
+                      <CardComponent
+                        ObjectsListId={ObjectsList.id}
+                        ObjectsListAuthor={ObjectsList.author}
+                        ObjectsListTitle={ObjectsList.title}
+                        ObjectsListIsbn={ObjectsList.isbn}
+                        ObjectsListImage={ObjectsList.image}
+                        ObjectsListCreatedAt={ObjectsList.createdAt}
+                        editClick={(e) =>
+                          this.editClick(e, ObjectsList, ObjectsList.id)
+                        }
+                        keys={key}
+                        status={this.state.status}
+                        editMode={this.state.editMode}
+                        image={this.state.image}
+                        bookId={this.state.bookId}
+                        handleChange={this.handleChange}
+                        imageUpload={(event) =>
+                          this.uploadImage(event.target.files)
+                        }
+                        buttonLoading={this.state.buttonLoading}
+                        submitEditBookData={this.submitEditBookData}
+                        server_errors={this.state.server_errors}
+                      />
                     </React.Fragment>
                   )
                 )}
