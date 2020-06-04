@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 import "react-confirm-alert/src/react-confirm-alert.css";
 import "./Add.scss";
 import { Alerts, errorMessage } from "../Utils/Auth";
@@ -132,4 +133,19 @@ const AddComponent = (props) => {
   );
 };
 
+AddComponent.propTypes = {
+  submitBookdata: PropTypes.func.isRequired,
+  handleChange: PropTypes.func.isRequired,
+  server_errors: PropTypes.string.isRequired,
+  buttonLoading: PropTypes.bool.isRequired,
+  status: PropTypes.number.isRequired,
+  uploadImage: PropTypes.func.isRequired,
+  image: PropTypes.string.isRequired,
+  isbnError: PropTypes.string,
+  titleError: PropTypes.string,
+  authorError: PropTypes.string,
+  isbn: PropTypes.string,
+  author: PropTypes.string,
+  title: PropTypes.string,
+};
 export default AddComponent;

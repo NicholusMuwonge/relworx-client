@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 import "react-confirm-alert/src/react-confirm-alert.css";
 import { Alerts, errorMessage } from "../Utils/Auth";
 import "./SignUp.scss";
@@ -107,9 +108,9 @@ const SignUpComponent = (props) => {
                   <a className="signup__link" href="/login">
                     I am already a member
                   </a>
-                  <br/>
+                  <br />
                   <a className="signup__link" href="/">
-                      Home
+                    Home
                   </a>
                 </li>
               </ul>
@@ -121,4 +122,18 @@ const SignUpComponent = (props) => {
   );
 };
 
+SignUpComponent.propTypes = {
+  submituserRegistrationForm: PropTypes.func,
+  buttonLoading: PropTypes.bool,
+  success: PropTypes.string,
+  server_errors: PropTypes.string,
+  passwordError: PropTypes.string,
+  emailError: PropTypes.string,
+  email: PropTypes.string,
+  password: PropTypes.string,
+  password1: PropTypes.string,
+  username: PropTypes.string,
+  usernameError: PropTypes.string,
+  handleChange: PropTypes.func,
+};
 export default SignUpComponent;

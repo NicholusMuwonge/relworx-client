@@ -3,7 +3,7 @@ import "./Dashboard.scss";
 import { confirmAlert } from "react-confirm-alert";
 import "react-confirm-alert/src/react-confirm-alert.css";
 import axios from "axios";
-import { Alerts, Authenticated, normaliseDate } from "../Utils/Auth";
+import { Alerts, Authenticated } from "../Utils/Auth";
 import firebase from "../Firebase/Firebase";
 import AddBook from "../AddPost/Add";
 import back from "./back-arrow.png";

@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 import "./Dashboard.scss";
 import "react-confirm-alert/src/react-confirm-alert.css";
 import { Alerts, normaliseDate } from "../Utils/Auth";
@@ -169,4 +170,26 @@ export const CardComponent = (props) => {
     </React.Fragment>
   );
 };
+Jumbotron.propTypes = {
+  Toggle: PropTypes.string,
+};
+
+CardComponent.propTypes = {
+  ObjectsListId: PropTypes.number,
+  keys: PropTypes.number,
+  status: PropTypes.number,
+  editMode: PropTypes.string.isRequired,
+  editClick: PropTypes.func.isRequired,
+  bookId: PropTypes.string.isRequired,
+  image: PropTypes.string.isRequired,
+  ObjectsListTitle: PropTypes.string.isRequired,
+  handleChange: PropTypes.func.isRequired,
+  ObjectsListCreatedAt: PropTypes.string.isRequired,
+  submitEditBookData: PropTypes.func.isRequired,
+  imageUpload: PropTypes.func.isRequired,
+  buttonLoading: PropTypes.bool,
+  ObjectsListIsbn: PropTypes.string,
+  server_errors: PropTypes.string,
+};
+
 export default CardComponent;

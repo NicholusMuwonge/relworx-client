@@ -1,24 +1,11 @@
-import React from 'react';
+import React from "react";
+import PropTypes from "prop-types";
 import "react-confirm-alert/src/react-confirm-alert.css";
-import { errorMessage } from "../Utils/Auth";
-import { Alert } from 'reactstrap';
-import './Login.scss';
+import { Alerts, errorMessage } from "../Utils/Auth";
+import "./Login.scss";
 
-
-const AlertBlock = (props) => {
-  const [visible, setVisible] = React.useState(true);
-
-  const onDismiss = () => setVisible(false);
-
+const LoginComponent = (props) => {
   return (
-    <Alert color={props.color} isOpen={visible} toggle={onDismiss}>
-      {props.text}
-    </Alert>
-  );
-}
-
-const LoginComponent = (props) =>{
-    return (
     <span className="login">
       <div className="signup__container">
         <div className="container__child signup__form">
@@ -55,34 +42,38 @@ const LoginComponent = (props) =>{
               />
               {errorMessage(props.passwordError)}
             </div>
-            {(props.server_errors===400)?
-            <AlertBlock color={"danger"}
-            text={"User with credentials doesnt exist in our system. Please check your password or username"} 
-            />
-            :"" }
-            {props.success==="true"?(
-            <AlertBlock color={"success"}
-            text={"Welcome back."}
-            />
-            ):""
-          }
+            {props.server_errors === 400 ? (
+              <Alerts
+                color={"danger"}
+                text={
+                  "User with credentials doesnt exist in our system. Please check your password or username"
+                }
+              />
+            ) : (
+              ""
+            )}
+            {props.success === "true" ? (
+              <Alerts color={"success"} text={"Welcome back."} />
+            ) : (
+              ""
+            )}
             <div className="m-t-lg">
               <ul className="list-inline">
                 <li>
                   <input
                     className="btn btn--form"
                     type="submit"
-                    disabled={props.buttonLoading===true}
-                    value={props.buttonLoading===false?"Login":"loading"}
+                    disabled={props.buttonLoading === true}
+                    value={props.buttonLoading === false ? "Login" : "loading"}
                   />
                 </li>
                 <li>
                   <a className="signup__link" href="/register">
                     I don't have an account
                   </a>
-                  <br/>
+                  <br />
                   <a className="signup__link" href="/">
-                      Home
+                    Home
                   </a>
                 </li>
               </ul>
@@ -90,8 +81,19 @@ const LoginComponent = (props) =>{
           </form>
         </div>
       </div>
-      </span>
-    );
-}
+    </span>
+  );
+};
 
+LoginComponent.propTypes = {
+  submitUserLoginForm: PropTypes.func,
+  buttonLoading: PropTypes.bool,
+  success: PropTypes.string,
+  server_errors: PropTypes.string,
+  passwordError: PropTypes.string,
+  emailError: PropTypes.string,
+  email: PropTypes.string,
+  password: PropTypes.string,
+  handleChange: PropTypes.func,
+};
 export default LoginComponent;
